@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "This is a URL-shortening service that provides a RESTful API. It allows users to submit a URL and receive a shortened version, and to track the usage of their shortened URLs. It is built with TypeScript (NestJS) and MongoDB (Mongoose ORM).",
   "main": "index.js",
+  "type": "module",
   "directories": {
     "test": "test"
   },
@@ -37,7 +38,7 @@
     "eslint": "^8.44.0",
     "prettier": "^3.0.0",
     "supertest": "^6.3.3",
-    "ts-jest": "^29.1.0",
+    "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   }

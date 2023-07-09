@@ -106,5 +106,5 @@
     // "skipDefaultLibCheck": true,
     "skipLibCheck": true
   },
-  "exclude": ["jest.config.js"]
+  "exclude": ["jest.config.cjs"]
 }
