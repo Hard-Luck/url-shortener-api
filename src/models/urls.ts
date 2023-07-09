@@ -27,3 +27,10 @@ export async function insertNewUrl(url: string, userId: string) {
     },
   });
 }
+
+export async function getUrlById(id: string) {
+  console.log("model", id);
+
+  const url = await db.url.findFirst({ where: { id: id } });
+  return url;
+}
