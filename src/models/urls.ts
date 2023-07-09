@@ -37,3 +37,9 @@ export async function getUrlById(id: string) {
   const url = await db.url.findFirst({ where: { id: id } });
   return url;
 }
+
+export async function getUrlsByUserId(id: string) {
+  const user = await db.user.findFirst({ where: { id: id }, include: { urls: true } });
+  if (user === null) throw new Error('Internal server error');
+  return user.urls;
+}

@@ -13,7 +13,7 @@ beforeAll(async () => {
   } = await api.post('/v1/login').send({ email, password });
   token = newToken;
 });
-beforeEach(() => seed());
+beforeEach(async () => await seed());
 
 describe('API', () => {
   describe('REDIRECT', () => {
@@ -36,7 +36,7 @@ describe('API', () => {
           .get('/v1/urls')
           .set('Authorization', `Bearer ${token}`)
           .expect(200);
-        expect(urls).toHaveLength(2);
+        expect(urls).toHaveLength(3);
         urls.forEach((url: unknown) => {
           expect(isApiUrl(url)).toBe(true);
         });
@@ -67,7 +67,7 @@ describe('API', () => {
           .get('/v1/urls')
           .set('Authorization', `Bearer ${token}`)
           .expect(200);
-        expect(urls).toHaveLength(3);
+        expect(urls).toHaveLength(4);
       });
       it('Status 400: if url is missing', async () => {
         const {
@@ -80,5 +80,17 @@ describe('API', () => {
         expect(message).toBe('Invalid url');
       });
     });
-  });
-});
+    describe('GET /v1/urls/user', () => {
+      it('200: should serve users urls', async () => {
+        const { body: { urls } } = await api.get("/v1/urls/user")
+          .set('Authorization', `Bearer ${token}`)
+          .expect(200);
+        expect(urls).toHaveLength(2);
+        urls.forEach((url: unknown) => {
+          if (isApiUrl(url)) expect(url.userId).toBe('2');
+          else throw new Error('url is not an api url');
+        });
+      })
+    })
+  })
+})

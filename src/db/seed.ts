@@ -11,6 +11,7 @@ export async function seed() {
     const usersWithIds = await db.user.findMany({});
     const urlsWithIds = [
       { ...urls[0], userId: usersWithIds[0].id },
+      { ...urls[2], userId: usersWithIds[1].id },
       { ...urls[1], userId: usersWithIds[1].id },
     ];
     await db.url.createMany({ data: urlsWithIds });

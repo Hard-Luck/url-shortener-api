@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { getAllUrls, getUrlById, insertNewUrl } from '../models/urls';
+import { getAllUrls, getUrlById, getUrlsByUserId, insertNewUrl } from '../models/urls';
 import { userFromRequest } from '../auth';
 
 export async function getUrls(req: Request, res: Response, next: NextFunction) {
@@ -36,6 +36,16 @@ export async function redirectToOriginalUrl(
     } else {
       res.status(404).send({ message: 'Not Found' });
     }
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getUserUrls(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { id } = userFromRequest(req);
+    const urls = await getUrlsByUserId(id)
+    res.status(200).send({ urls });
   } catch (error) {
     next(error);
   }
