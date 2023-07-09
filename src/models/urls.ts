@@ -1,5 +1,6 @@
 import { db } from './prismaClient';
 import { generateId } from './utils/ids';
+import { isValidUrl } from './utils/validate';
 
 export async function urlIdExists(id: string) {
   const url = await db.url.findFirst({ where: { id: id } });
@@ -11,7 +12,10 @@ export async function getAllUrls() {
   return urls;
 }
 
-export async function insertNewUrl(url: string, userId: string) {
+export async function insertNewUrl(url: string, alias: string, userId: string) {
+  if (!url || !isValidUrl(url)) {
+    return Promise.reject({ status: 400, message: 'Invalid url' });
+  }
   let id: string;
   let condition: boolean;
   do {
@@ -23,6 +27,7 @@ export async function insertNewUrl(url: string, userId: string) {
     data: {
       id: id,
       originalUrl: url,
+      alias: alias,
       userId,
     },
   });

@@ -15,19 +15,28 @@ export async function postUrl(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = userFromRequest(req);
     const originalUrl = req.body.url;
-    const url = await insertNewUrl(originalUrl, id);
+    const alias = req.body.alias;
+    const url = await insertNewUrl(originalUrl, alias, id);
     res.status(201).send({ url });
   } catch (error) {
     next(error);
   }
 }
 
-export async function redirectToOriginalUrl(req: Request, res: Response, next: NextFunction) {
-  const { url_id } = req.params;
-  const url = await getUrlById(url_id)
-  if (url) {
-    res.redirect(url.originalUrl);
-  } else {
-    next()
+export async function redirectToOriginalUrl(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const { url_id } = req.params;
+    const url = await getUrlById(url_id);
+    if (url) {
+      res.redirect(url.originalUrl);
+    } else {
+      res.status(404).send({ message: 'Not Found' });
+    }
+  } catch (error) {
+    next(error);
   }
 }

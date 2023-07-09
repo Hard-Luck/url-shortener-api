@@ -2,11 +2,13 @@
   "urls": [
     {
       "id": "1",
-      "originalUrl": "https://www.google.com"
+      "originalUrl": "https://www.google.com",
+      "alias": "google"
     },
     {
       "id": "2",
-      "originalUrl": "https//www.twitter.com"
+      "originalUrl": "https//www.twitter.com",
+      "alias": "twitter"
     }
   ]
 }

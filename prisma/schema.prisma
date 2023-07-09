@@ -8,19 +8,20 @@ generator client {
 }
 
 model User {
-  id      String   @default(uuid()) @id @map("_id")
-  email   String   
-  password String 
-  urls   Url[] 
-  
+  id       String @id @default(uuid()) @map("_id")
+  email    String
+  password String
+  urls     Url[]
+
   @@index([email])
 }
-model Url {
-  id       String  @id @map("_id")
-  originalUrl String 
-  clicked Int @default(0)
-  isActive Boolean @default(true) 
-  userId String @map("userId")
-  user User @relation(fields: [userId], references: [id])
-}
 
+model Url {
+  id          String  @id @map("_id")
+  alias       String?  
+  originalUrl String
+  clicked     Int     @default(0)
+  isActive    Boolean @default(true)
+  userId      String  @map("userId")
+  user        User    @relation(fields: [userId], references: [id])
+}

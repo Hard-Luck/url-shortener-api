@@ -6,6 +6,7 @@ describe('type guards', () => {
       const validApiUrl = {
         id: 1,
         clicked: 0,
+        alias: 'google',
         isActive: true,
         userId: 1,
         originalUrl: 'www.google.com',

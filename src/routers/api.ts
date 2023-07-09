@@ -1,7 +1,6 @@
 import express, { Request, Response } from 'express';
 import v1Router from './v1';
 
-
 const apiRouter = express.Router();
 
 apiRouter.get('/', (req: Request, res: Response) => {
