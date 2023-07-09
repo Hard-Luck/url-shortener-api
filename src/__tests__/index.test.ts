@@ -22,6 +22,24 @@ describe('API', () => {
         const res = await api.get('/1').expect(302);
         expect(res.header.location).toBe('https://www.google.com');
       });
+      it('increases the clicked counter when successful', async () => {
+        await api.get('/1');
+        const {
+          body: { urls },
+        } = await api.get('/v1/urls').set('Authorization', `Bearer ${token}`);
+        const url = urls.find(
+          (url: { id: string; clicked: number }) => url.id === '1',
+        );
+        expect(url).toHaveProperty('clicked', 1);
+        await api.get('/1');
+        const {
+          body: { urls: secondCheck },
+        } = await api.get('/v1/urls').set('Authorization', `Bearer ${token}`);
+        const urlClickedTwice = secondCheck.find(
+          (url: { id: string; clicked: number }) => url.id === '1',
+        );
+        expect(urlClickedTwice).toHaveProperty('clicked', 2);
+      });
       it('Status 404: if url_id is not found', async () => {
         await api.get('/3000').expect(404);
       });
@@ -82,7 +100,10 @@ describe('API', () => {
     });
     describe('GET /v1/urls/user', () => {
       it('200: should serve users urls', async () => {
-        const { body: { urls } } = await api.get("/v1/urls/user")
+        const {
+          body: { urls },
+        } = await api
+          .get('/v1/urls/user')
           .set('Authorization', `Bearer ${token}`)
           .expect(200);
         expect(urls).toHaveLength(2);
@@ -90,7 +111,7 @@ describe('API', () => {
           if (isApiUrl(url)) expect(url.userId).toBe('2');
           else throw new Error('url is not an api url');
         });
-      })
-    })
-  })
-})
+      });
+    });
+  });
+});

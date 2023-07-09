@@ -38,8 +38,28 @@ export async function getUrlById(id: string) {
   return url;
 }
 
+export async function incrementClicked(id: string) {
+  return db.url.update({
+    where: { id: id },
+    data: {
+      clicked: { increment: 1 },
+    },
+  });
+}
+
+export async function redirect(id: string) {
+  const url = await getUrlById(id);
+  if (url !== null) {
+    await incrementClicked(id);
+  }
+  return url;
+}
+
 export async function getUrlsByUserId(id: string) {
-  const user = await db.user.findFirst({ where: { id: id }, include: { urls: true } });
+  const user = await db.user.findFirst({
+    where: { id: id },
+    include: { urls: true },
+  });
   if (user === null) throw new Error('Internal server error');
   return user.urls;
 }

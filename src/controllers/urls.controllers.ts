@@ -1,5 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import { getAllUrls, getUrlById, getUrlsByUserId, insertNewUrl } from '../models/urls';
+import {
+  getAllUrls,
+  getUrlsByUserId,
+  insertNewUrl,
+  redirect,
+} from '../models/urls';
 import { userFromRequest } from '../auth';
 
 export async function getUrls(req: Request, res: Response, next: NextFunction) {
@@ -30,7 +35,7 @@ export async function redirectToOriginalUrl(
 ) {
   try {
     const { url_id } = req.params;
-    const url = await getUrlById(url_id);
+    const url = await redirect(url_id);
     if (url) {
       res.redirect(url.originalUrl);
     } else {
@@ -41,10 +46,14 @@ export async function redirectToOriginalUrl(
   }
 }
 
-export async function getUserUrls(req: Request, res: Response, next: NextFunction) {
+export async function getUserUrls(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   try {
     const { id } = userFromRequest(req);
-    const urls = await getUrlsByUserId(id)
+    const urls = await getUrlsByUserId(id);
     res.status(200).send({ urls });
   } catch (error) {
     next(error);
