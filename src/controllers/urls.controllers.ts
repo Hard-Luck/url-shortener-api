@@ -23,11 +23,13 @@ export async function postUrl(req: Request, res: Response, next: NextFunction) {
 }
 
 export async function redirectToOriginalUrl(req: Request, res: Response, next: NextFunction) {
+  console.log(req.method, req.params);
+
   const { url_id } = req.params;
   const url = await getUrlById(url_id)
   if (url) {
     res.redirect(url.originalUrl);
   } else {
-    res.status(404).send({ message: 'Url not found' });
+    next()
   }
 }
