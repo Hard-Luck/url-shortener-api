@@ -17,10 +17,10 @@ model User {
 }
 model Url {
   id       String  @id @map("_id")
-  original_url String @map("originalUrl")
+  originalUrl String 
   clicked Int @default(0)
-  is_active Boolean @default(false) @map("isActive")
-  user_id String @map("userId")
-  user User @relation(fields: [user_id], references: [id])
+  isActive Boolean @default(true) 
+  userId String @map("userId")
+  user User @relation(fields: [userId], references: [id])
 }
 

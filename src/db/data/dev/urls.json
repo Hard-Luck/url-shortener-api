@@ -2,11 +2,11 @@
   "urls": [
     {
       "id": "1",
-      "original_url": "https://www.google.com"
+      "originalUrl": "https://www.google.com"
     },
     {
       "id": "2",
-      "original_url": "https//www.twitter.com"
+      "originalUrl": "https//www.twitter.com"
     }
   ]
 }

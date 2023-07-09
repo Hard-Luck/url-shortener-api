@@ -27,7 +27,7 @@
     /* Modules */
     "module": "commonjs",
     "rootDir": "./src",
-    // "moduleResolution": "node10",
+    "moduleResolution": "Node",
     // "baseUrl": "./",
     // "paths": {},
     // "rootDirs": [],
