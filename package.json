@@ -8,7 +8,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npx jest",
+    "prepare": "npx prisma generate && npx prisma db push",
+    "test-actions": "npm run prepare && npm test",
+    "test": "npx jest --runInBand",
     "dev": "npx nodemon ./src/listen.ts",
     "start": "ts-node ./src/listen.ts",
     "encrypt": "ts-node ./src/auth/encrypt.ts",
