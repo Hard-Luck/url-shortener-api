@@ -16,6 +16,19 @@ beforeAll(async () => {
 beforeEach(() => seed());
 
 describe('API', () => {
+  describe('REDIRECT', () => {
+    describe('GET /:url_id', () => {
+      it('Status 302: Redirects to original url', async () => {
+        const res = await api
+          .get('/1')
+          .expect(302);
+        expect(res.header.location).toBe('https://www.google.com');
+      })
+      it('Status 404: if url_id is not found', async () => {
+        await api.get('/3000').expect(404);
+      })
+    });
+  });
   describe('URLS', () => {
     describe('GET /v1/urls', () => {
       it('Status 200: Serves all urls', async () => {
