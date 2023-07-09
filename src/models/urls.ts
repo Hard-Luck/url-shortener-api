@@ -27,3 +27,8 @@ export async function insertNewUrl(url: string, userId: string) {
     },
   });
 }
+
+export async function getUrlById(id: string) {
+  const url = await db.url.findFirst({ where: { id: id } });
+  return url;
+}
