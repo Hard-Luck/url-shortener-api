@@ -1,0 +1,46 @@
+{
+  "endpoints": {
+    "REDIRECT": {
+      "GET /:url_id": {
+        "description": "This endpoint redirects the user to the original URL associated with the given url_id. It also increases a counter that tracks the number of times the URL has been accessed.",
+        "responses": {
+          "302": {
+            "description": "Successfully redirected to the original URL. The location of the original URL is provided in the header's location field."
+          },
+          "404": {
+            "description": "The provided url_id could not be found."
+          }
+        }
+      }
+    },
+    "URLS": {
+      "GET /v1/urls": {
+        "description": "This endpoint retrieves all URLs.",
+        "responses": {
+          "200": {
+            "description": "Successfully served all URLs. The response body contains an array of URL objects."
+          }
+        }
+      },
+      "POST /v1/urls": {
+        "description": "This endpoint creates a new URL record. It requires the original URL and an alias in the request body.",
+        "responses": {
+          "201": {
+            "description": "Successfully created a new URL. The response body contains the newly created URL object."
+          },
+          "400": {
+            "description": "Invalid request. The URL was missing in the request body. The response body contains an error message."
+          }
+        }
+      },
+      "GET /v1/urls/user": {
+        "description": "This endpoint retrieves all URLs for a particular user. It requires the user's token in the Authorization header.",
+        "responses": {
+          "200": {
+            "description": "Successfully served all URLs associated with the user. The response body contains an array of URL objects that belong to the user."
+          }
+        }
+      }
+    }
+  }
+}

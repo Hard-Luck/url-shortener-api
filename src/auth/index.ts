@@ -110,7 +110,7 @@ export async function login(req: Request, res: Response) {
   }
 
   const token = await createToken(user);
-  res.send({ token });
+  res.send({ token, username: user.username });
 }
 export function userFromRequest(req: Request) {
   const {
