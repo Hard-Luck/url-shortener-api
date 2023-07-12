@@ -208,4 +208,43 @@ describe('API', () => {
       });
     });
   });
+  describe('USERS', () => {
+    describe('POST /v1/users', () => {
+      it('201 : should create user', async () => {
+        const newUser = {
+          email: 'XXXX@XXXXXX.XXX',
+          username: 'XXXX',
+          password: 'password',
+        };
+        const { body } = await api.post('/v1/users').send(newUser).expect(201);
+        expect(body.user.email).toBe(newUser.email);
+        expect(body.user).toHaveProperty('id', expect.any(String));
+        expect(body.user).toHaveProperty('password', expect.any(String));
+      });
+      it('400 : if email is missing', async () => {
+        const newUser = { password: 'XXXXXXXX' };
+        const {
+          body: { message },
+        } = await api.post('/v1/users').send(newUser).expect(400);
+        expect(message).toBe('Bad Request');
+      });
+      it('400 : if password is missing', async () => {
+        const newUser = { email: 'XXXXXXXXXXXXXXX' };
+        const {
+          body: { message },
+        } = await api.post('/v1/users').send(newUser).expect(400);
+        expect(message).toBe('Bad Request');
+      });
+      it('400 : if username is missing', async () => {
+        const newUser = {
+          email: 'XXXXXXXXXXXXXXX',
+          password: 'XXXXXXXXXXXXXXX',
+        };
+        const {
+          body: { message },
+        } = await api.post('/v1/users').send(newUser).expect(400);
+        expect(message).toBe('Bad Request');
+      });
+    });
+  });
 });

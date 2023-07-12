@@ -72,7 +72,18 @@ export async function isAuthorised(
   res: Response,
   next: NextFunction,
 ) {
+  const validMethods: Record<string, Array<string>> = {
+    '/users': ['POST'],
+    '/login': ['POST'],
+  };
+  const path = req.path as string;
+  const method = req.method.toUpperCase();
+
   try {
+    if (validMethods[path] && validMethods[path].includes(method)) {
+      next();
+      return;
+    }
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
