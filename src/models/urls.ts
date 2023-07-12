@@ -63,3 +63,39 @@ export async function getUrlsByUserId(id: string) {
   if (user === null) throw new Error('Internal server error');
   return user.urls;
 }
+
+export async function deleteUrlById(url_id: string, user_id: string) {
+  const url = await getUrlById(url_id);
+
+  if (url === null || url.userId !== user_id) {
+    return Promise.reject({ status: 404, message: 'Not Found' });
+  }
+  await db.url.deleteMany({
+    where: { id: url_id },
+  });
+}
+
+export async function updateUrl(
+  url_id: string,
+  user_id: string,
+  isActive?: boolean,
+  alias?: string,
+) {
+  const isOwnerUrlCheck = await getUrlById(url_id);
+  if (isOwnerUrlCheck === null || isOwnerUrlCheck.userId !== user_id) {
+    return Promise.reject({ status: 404, message: 'Not Found' });
+  }
+
+  if (isActive === undefined && alias === undefined) {
+    return Promise.reject({ status: 400, message: 'Bad Request' });
+  }
+  const url = db.url.update({
+    where: { id: url_id },
+    data: {
+      isActive: isActive,
+      alias: alias,
+    },
+  });
+  if (!url) return Promise.reject({ status: 404, message: 'Not Found' });
+  return url;
+}

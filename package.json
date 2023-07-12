@@ -14,7 +14,7 @@
     "start": "ts-node ./src/listen.ts",
     "encrypt": "ts-node ./src/auth/encrypt.ts",
     "prod": "ts-node --transpile-only ./src/listen.ts",
-    "lint": "eslint . --ext .ts",
+    "lint": "eslint . --ext .vue",
     "prettier": "npx prettier --write .",
     "seed": "ts-node ./src/db/runSeed"
   },

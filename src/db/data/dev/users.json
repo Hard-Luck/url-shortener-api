@@ -2,11 +2,13 @@
   "users": [
     {
       "id": "1",
+      "username": "aliUsername",
       "email": "ali@test.com",
       "password": "$2a$10$SUo8T.jzPlnfBWbQ.rFPEuP0zRjZHw6XFnlIOeGx/0so47qDlx73S"
     },
     {
       "id": "2",
+      "username": "markUsername",
       "email": "mark@test.com",
       "password": "$2a$10$SUo8T.jzPlnfBWbQ.rFPEuP0zRjZHw6XFnlIOeGx/0so47qDlx73S"
     }

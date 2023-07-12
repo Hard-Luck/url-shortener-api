@@ -16,7 +16,7 @@ export async function seed() {
     ];
     await db.url.createMany({ data: urlsWithIds });
   } catch (error) {
-    console.log(error);
+    console.log('error', error);
     throw error;
   }
 }

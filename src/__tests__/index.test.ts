@@ -113,5 +113,99 @@ describe('API', () => {
         });
       });
     });
+    describe('PATCH /v1/urls/:id', () => {
+      it('200: should serve url with changed isActive', async () => {
+        const requestBody = {
+          isActive: false,
+        };
+        const {
+          body: { url },
+        } = await api
+          .patch('/v1/urls/2')
+          .send(requestBody)
+          .set('Authorization', `Bearer ${token}`)
+          .expect(200);
+        if (isApiUrl(url)) expect(url.isActive).toBe(false);
+        else throw new Error('url is not an api url');
+      });
+      it('200: should serve url with changed alias', async () => {
+        const requestBody = {
+          alias: 'new alias',
+        };
+        const {
+          body: { url },
+        } = await api
+          .patch('/v1/urls/2')
+          .send(requestBody)
+          .set('Authorization', `Bearer ${token}`)
+          .expect(200);
+        if (isApiUrl(url)) expect(url.alias).toBe('new alias');
+        else throw new Error('url is not an api url');
+      });
+      it('400: if keys is missing', async () => {
+        const {
+          body: { message },
+        } = await api
+          .patch('/v1/urls/2')
+          .send({})
+          .set('Authorization', `Bearer ${token}`)
+          .expect(400);
+        expect(message).toBe('Bad Request');
+      });
+      it('403 : if not token is provided', () => {
+        return api.patch('/v1/urls/2').send({}).expect(403);
+      });
+      it('404: if url_id is not found', async () => {
+        const requestBody = {
+          isActive: false,
+        };
+        await api
+          .patch('/v1/urls/3000')
+          .send(requestBody)
+          .set('Authorization', `Bearer ${token}`)
+          .expect(404);
+      });
+      it('404: if user is not the owner of the url', async () => {
+        const requestBody = {
+          isActive: false,
+        };
+        await api
+          .patch('/v1/urls/1')
+          .send(requestBody)
+          .set('Authorization', `Bearer ${token}`)
+          .expect(404);
+      });
+    });
+    describe('DELETE /v1/urls/:id', () => {
+      it('204 : should delete url and return no content', async () => {
+        const allUrls = await api
+          .get('/v1/urls')
+          .set('Authorization', `Bearer ${token}`);
+        expect(allUrls.body.urls).toHaveLength(3);
+        await api
+          .delete('/v1/urls/2')
+          .set('Authorization', `Bearer ${token}`)
+          .expect(204);
+        const allUrlsAfterDelete = await api
+          .get('/v1/urls')
+          .set('Authorization', `Bearer ${token}`);
+        expect(allUrlsAfterDelete.body.urls).toHaveLength(2);
+      });
+      it('403 : if not token is provided', () => {
+        return api.delete('/v1/urls/1').expect(403);
+      });
+      it('404 : if url_id is not found', async () => {
+        await api
+          .delete('/v1/urls/3000')
+          .set('Authorization', `Bearer ${token}`)
+          .expect(404);
+      });
+      it('404 : if user is not the owner of the url', async () => {
+        await api
+          .delete('/v1/urls/1')
+          .set('Authorization', `Bearer ${token}`)
+          .expect(404);
+      });
+    });
   });
 });
